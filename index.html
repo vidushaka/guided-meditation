@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Mediation Class Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .form-group:nth-child(even) {
+            animation-delay: 0.1s;
+        }
+
+        .form-group:nth-child(odd) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 2px dashed #4facfe;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .file-label:hover {
+            border-color: #0056b3;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            transform: translateY(-2px);
+        }
+
+        .file-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+            color: #4facfe;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-item,
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .radio-item:hover,
+        .checkbox-item:hover {
+            border-color: #4facfe;
+            background: #e3f2fd;
+            transform: translateY(-2px);
+        }
+
+        .radio-item input,
+        .checkbox-item input {
+            margin-right: 8px;
+            transform: scale(1.2);
+        }
+
+        .radio-item input:checked + span,
+        .checkbox-item input:checked + span {
+            color: #4facfe;
+            font-weight: 600;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .radio-group,
+            .checkbox-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🕊️ Community Mediation Class</h1>
+            <p>Join us to learn conflict resolution and peacebuilding skills</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="note">
+                <strong>🚀 Registration Form</strong> Fill out this form to register for our community mediation class. We'll add you to our WhatsApp group for updates and coordination.
+            </div>
+
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" enctype="multipart/form-data" id="questionnaire">
+                <div class="form-group">
+                    <label for="name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">WhatsApp Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="whatsapp_number" placeholder="+1234567890" required>
+                    <small style="color: #666; font-size: 0.9em;">Include country code (e.g., +1 for US, +91 for India)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age Group <span class="required">*</span></label>
+                    <select id="age" name="age_group" required>
+                        <option value="">Select your age group</option>
+                        <option value="18-25">18-25</option>
+                        <option value="26-35">26-35</option>
+                        <option value="36-45">36-45</option>
+                        <option value="46-55">46-55</option>
+                        <option value="56-65">56-65</option>
+                        <option value="65+">65+</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="occupation">Occupation/Background</label>
+                    <input type="text" id="occupation" name="occupation" placeholder="e.g., Teacher, Student, Business Owner">
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Previous Experience with Mediation or Conflict Resolution</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="exp_none" name="experience" value="none">
+                            <span>🆕 No Experience</span>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="exp_some" name="experience" value="some">
+                            <span>📚 Some Knowledge</span>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="exp_experienced" name="experience" value="experienced">
+                            <span>💼 Professional Experience</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="volunteer">Interest in Volunteer Mediation Work <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="vol_very" name="volunteer_interest" value="very_interested" required>
+                            <span>🌟 Very Interested</span>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="vol_somewhat" name="volunteer_interest" value="somewhat_interested">
+                            <span>👍 Somewhat Interested</span>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="vol_maybe" name="volunteer_interest" value="maybe_later">
+                            <span>🤔 Maybe in the Future</span>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="vol_learning" name="volunteer_interest" value="learning_only">
+                            <span>📖 Just Learning for Now</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="availability">Preferred Class Schedule</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="weekday_morning" name="availability" value="weekday_morning">
+                            <span>🌅 Weekday Mornings</span>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="weekday_evening" name="availability" value="weekday_evening">
+                            <span>🌆 Weekday Evenings</span>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="weekend" name="availability" value="weekend">
+                            <span>🎳 Weekends</span>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="flexible" name="availability" value="flexible">
+                            <span>🔄 Flexible</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="photo">Profile Photo (Optional)</label>
+                    <div class="file-upload">
+                        <input type="file" id="photo" name="profile_photo" accept="image/*" class="file-input">
+                        <label for="photo" class="file-label">
+                            <span class="file-icon">📸</span>
+                            <span>Upload a photo for our class directory</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="motivation">Why are you interested in learning mediation? What do you hope to gain?</label>
+                    <textarea id="motivation" name="motivation" placeholder="Share your motivation and goals for taking this class..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="questions">Questions or Special Accommodations Needed</label>
+                    <textarea id="questions" name="questions" placeholder="Any questions about the class or special needs we should know about..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Register for Mediation Class</button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <h3>🎉 Registration Successful!</h3>
+                <p>Thank you for registering! We'll add you to our WhatsApp group and send class details soon.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File upload feedback
+        const fileInput = document.getElementById('photo');
+        const fileLabel = document.querySelector('.file-label span:last-child');
+        const originalText = fileLabel.textContent;
+
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                fileLabel.textContent = `Selected: ${e.target.files[0].name}`;
+                fileLabel.style.color = '#4facfe';
+            } else {
+                fileLabel.textContent = originalText;
+                fileLabel.style.color = '';
+            }
+        });
+
+        // Form submission handling
+        document.getElementById('questionnaire').addEventListener('submit', function(e) {
+            // Note: In a real implementation, you would handle the response from Formspree
+            // For demo purposes, we'll show success message after a delay
+            
+            // Uncomment the following lines and remove the setTimeout for actual implementation
+            // e.preventDefault();
+            // setTimeout(() => {
+            //     document.getElementById('successMessage').style.display = 'block';
+            //     this.style.display = 'none';
+            // }, 1000);
+        });
+
+        // Add hover effects to radio and checkbox items
+        document.querySelectorAll('.radio-item, .checkbox-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const input = this.querySelector('input');
+                if (input.type === 'radio') {
+                    input.checked = true;
+                } else {
+                    input.checked = !input.checked;
+                }
+            });
+        });
+
+        // Smooth animations on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        });
+
+        document.querySelectorAll('.form-group').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
